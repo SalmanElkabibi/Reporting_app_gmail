@@ -77,14 +77,24 @@ def login(email,password,recovery,driver,x,p_user,p_password):
         print(c.is_selected())
         if c.is_selected() == False :
             p[1].click()
-            close = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//button[@aria-label='Close']")))
-            close.click()
+            time.sleep(2)
+            try:
+                print('cheking reload button')
+                reload = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//button[@name='save']")))
+                print(reload)
+                reload.click()
+                time.sleep(4)
+            except:
+                close = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//button[@aria-label='Close']")))
+                close.click()
+            
         elif c.is_selected() == True :
             close = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//button[@aria-label='Close']")))
             close.click()
         time.sleep(3)
-    except :
-         driver.save_screenshot(".\\screenshots\\login_errors\\"+email+".png") 
+    except Exception as e :
+        print(e)
+        driver.save_screenshot(".\\screenshots\\login_errors\\"+email+".png") 
     
             
 def star(subject,driver,s,rep,link,domain):
