@@ -151,8 +151,7 @@ def click_offer(subject,driver,s,rep,link,domain):
         driver.close()
         driver.switch_to.window(p)
         time.sleep(2)
-        
-    
+           
 
 def change_password(email,password,recovery,newpassword,driver):
     
@@ -227,7 +226,9 @@ def init_browser(ip,port,p_user,p_password,browsers,hide):
         comodo_options.binary_location = bp_comodo
 
         desired_capabilities = DesiredCapabilities().FIREFOX  
-        path = "C:\\Users\\rdp\\AppData\\Local\\Mozilla\\Firefox\\Profiles\\zysb8s18.default-release"
+        fpc = open('.\\paths\\comodo_profile.txt','r')
+        p_comodo = fpc.readline()
+        path = p_comodo
         firefox_profile = FirefoxProfile(path)
         firefox_profile.set_preference("dom.webdriver.enabled", False)
         firefox_profile.set_preference('useAutomationExtension', False)
