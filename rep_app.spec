@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(['rep_app.py'],
-             pathex=['C:\\Users\\rdp\\Desktop\\Reporting_app_gmail'],
+             pathex=['C:\\Users\\Salman\\Desktop\\Reporting_app_gmail-main\\Reporting_app_gmail-main'],
              binaries=[],
              datas=[],
              hiddenimports=[],

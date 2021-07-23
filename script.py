@@ -1,7 +1,10 @@
+
+
 from app import *
 import pandas as pd
 import json
 import threading
+import subprocess
 from multiprocessing import Process
 from multiprocessing import Pool
 from selenium import webdriver
@@ -18,10 +21,6 @@ import psutil
 from selenium.webdriver.firefox.options import Options as f_Options
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-
-
-
-
 
 start_time = time.time()
 
@@ -147,6 +146,7 @@ def click_offer(subject,driver,s,rep,link,domain):
         p = driver.window_handles[0]
         c = driver.window_handles[1]
         driver.switch_to.window(c)
+        time.sleep(4)
         driver.close()
         driver.switch_to.window(p)
         time.sleep(2)
@@ -158,6 +158,7 @@ def click_offer(subject,driver,s,rep,link,domain):
         p = driver.window_handles[0]
         c = driver.window_handles[1]
         driver.switch_to.window(c)
+        time.sleep(4)
         driver.close()
         driver.switch_to.window(p)
         time.sleep(2)
@@ -219,14 +220,16 @@ def change_password(email,password,recovery,newpassword,driver):
     time.sleep(5)  
 
 
-    
+
 def init_browser(ip,port,p_user,p_password,browsers,hide):
     
     print(ip,port,p_user,p_password)
+    print(type(ip))
+    print(type(port))
   
     
     global driver,x
-    
+
     if ip == '' and port == '' and p_user == '' and p_password == '' :
         
         print('Comodo without proxy : Activated')
@@ -251,8 +254,8 @@ def init_browser(ip,port,p_user,p_password,browsers,hide):
         driver = webdriver.Firefox(executable_path=PATH_firefox, options=comodo_options, firefox_profile=firefox_profile)
         x = 0
         
-    elif ip == '' and port == '' : 
-        
+    elif p_user == '' and p_password == '':
+
         proxy_ip_port = ip+':'+port
         print('Comodo proxy : Activated')
         comodo_options = f_Options()
@@ -296,8 +299,8 @@ def init_browser(ip,port,p_user,p_password,browsers,hide):
             comodo_options.headless = True
         driver = webdriver.Firefox(executable_path=PATH_firefox, options=comodo_options)
         x = 1
-        
-    return driver,x,p_user,p_password
+
+    return driver,x
 
 def begin(email,password,subject,recovery,ip,port,p_user,p_password,tasks,browsers,s,rep,link,domain,hide,newpassword):
     
@@ -438,17 +441,17 @@ def launch(x):
     processes = []
 
     while(len(emails)!=0):
-        for i in range(n):   
+        for i in range(n):
             p= Process(target=begin, args=(emails[0],passwords[0],subject,recovery[0],ips[0],ports[0],p_users[0],p_passwords[0],tasks,browsers,s,rep,link,domain,hide,newpasswords[0]))
             p.start()
             time.sleep(1)
             processes.append(p)
-            
-                
-            emails.remove(emails[0]) , passwords.remove(passwords[0]) , recovery.remove(recovery[0]) , ips.remove(ips[0]) , ports.remove(ports[0]) , p_users.remove(p_users[0]) , p_passwords.remove(p_passwords[0]) , newpasswords.remove(newpasswords[0]) 
-       
+
+
+            emails.remove(emails[0]) , passwords.remove(passwords[0]) , recovery.remove(recovery[0]) , ips.remove(ips[0]) , ports.remove(ports[0]) , p_users.remove(p_users[0]) , p_passwords.remove(p_passwords[0]) , newpasswords.remove(newpasswords[0])
+
         for process in processes:
-            process.join()   
+            process.join()
         
     
     print('Script Done')
@@ -457,9 +460,13 @@ def launch(x):
 
 def stop():
     print(processes)
-    if browsers == 'comodo':    
-        os.system("taskkill /F /IM icedragon.exe")
-        os.system("taskkill /F /IM geckodriver.exe")
+    if browsers == 'comodo':
+        for process in processes:
+            p = psutil.Process(process.pid)
+            print("terminate")
+            p.terminate()
+        subprocess.call('taskkill /F /IM icedragon.exe')
+        subprocess.call('taskkill /F /IM geckodriver.exe')
     elif browsers == 'chrome':
         os.system("taskkill /F /IM chrome.exe")
         os.system("taskkill /F /IM chromedriver.exe")
@@ -490,6 +497,8 @@ def resume():
 
     
     
+
+
 
 
 
