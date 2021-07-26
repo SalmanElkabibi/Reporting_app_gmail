@@ -262,6 +262,15 @@ def init_browser(ip,port,p_user,p_password,browsers,hide):
         fc = open('.\\paths\\comodo_path.txt','r')
         bp_comodo = fc.readline()
         comodo_options.binary_location = bp_comodo
+
+        fpc = open('.\\paths\\comodo_profile.txt', 'r')
+        p_comodo = fpc.readline()
+        path = p_comodo
+        firefox_profile = FirefoxProfile(path)
+        firefox_profile.set_preference("dom.webdriver.enabled", False)
+        firefox_profile.set_preference('useAutomationExtension', False)
+        firefox_profile.update_preferences()
+
         desired_capability = webdriver.DesiredCapabilities.FIREFOX
         desired_capability['marionette'] = True
         desired_capability['proxy'] = {
@@ -274,7 +283,7 @@ def init_browser(ip,port,p_user,p_password,browsers,hide):
         
         if hide == 'hide_browser' :
             comodo_options.headless = True
-        driver = webdriver.Firefox(executable_path=PATH_firefox,capabilities=desired_capability, options=comodo_options)
+        driver = webdriver.Firefox(executable_path=PATH_firefox,capabilities=desired_capability, options=comodo_options, firefox_profile=firefox_profile)
         x = 0
     
     elif ip != '' and port != '' and p_user != '' and p_password != '' :
@@ -284,6 +293,15 @@ def init_browser(ip,port,p_user,p_password,browsers,hide):
         comodo_options = f_Options()
         fc = open('.\\paths\\comodo_path.txt','r')
         bp_comodo = fc.readline()
+
+        fpc = open('.\\paths\\comodo_profile.txt', 'r')
+        p_comodo = fpc.readline()
+        path = p_comodo
+        firefox_profile = FirefoxProfile(path)
+        firefox_profile.set_preference("dom.webdriver.enabled", False)
+        firefox_profile.set_preference('useAutomationExtension', False)
+        firefox_profile.update_preferences()
+
         comodo_options.binary_location = bp_comodo
         desired_capability = webdriver.DesiredCapabilities.FIREFOX
         desired_capability['marionette'] = True
@@ -297,7 +315,7 @@ def init_browser(ip,port,p_user,p_password,browsers,hide):
     
         if hide == 'hide_browser' :
             comodo_options.headless = True
-        driver = webdriver.Firefox(executable_path=PATH_firefox, options=comodo_options)
+        driver = webdriver.Firefox(executable_path=PATH_firefox, options=comodo_options, firefox_profile=firefox_profile)
         x = 1
 
     return driver,x
