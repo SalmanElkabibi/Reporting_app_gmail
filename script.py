@@ -113,7 +113,7 @@ def archive(subject,driver,s,rep,link,domain):
 def mark_as_not_spam(subject,driver,s,rep,link,domain):
     print('Mark as not Spam')
     to_inbox = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//div[@aria-label='Move to Inbox']")))
-    time.sleep(2)
+    time.sleep(4)
     to_inbox.click()
     
 def mark_as_important(subject,driver,s,rep,link,domain):
