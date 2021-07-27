@@ -113,7 +113,7 @@ def archive(subject,driver,s,rep,link,domain):
 def mark_as_not_spam(subject,driver,s,rep,link,domain):
     print('Mark as not Spam')
     to_inbox = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//div[@aria-label='Move to Inbox']")))
-    time.sleep(4)
+    time.sleep(2)
     to_inbox.click()
     
 def mark_as_important(subject,driver,s,rep,link,domain):
@@ -140,8 +140,10 @@ def click_offer(subject,driver,s,rep,link,domain):
     print('Click offer : Starts')
     try : 
         dom = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//a[contains(@href,'"+domain+"')]")))
+        print('Domain found')
         print(dom)
-        dom.click()
+        time.sleep(2)
+        ActionChains(driver).move_to_element(dom).click(dom).perform()
         time.sleep(2)
         p = driver.window_handles[0]
         c = driver.window_handles[1]
@@ -150,10 +152,13 @@ def click_offer(subject,driver,s,rep,link,domain):
         driver.close()
         driver.switch_to.window(p)
         time.sleep(2)
-    except :
+    except Exception as e :
+        print(e)
         link = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//a[contains(text(),'"+link+"')]")))
+        print('Link found')
         print(link)
-        link.click()
+        time.sleep(2)
+        ActionChains(driver).move_to_element(link).click(link).perform()
         time.sleep(2)
         p = driver.window_handles[0]
         c = driver.window_handles[1]
@@ -341,12 +346,17 @@ def begin(email,password,subject,recovery,ip,port,p_user,p_password,tasks,browse
         search.send_keys('in:spam subject:'+subject+Keys.RETURN)
         time.sleep(3)
         try:
-            e = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//tr[@jscontroller='ZdOxDb'][contains(@jslog,'18406')]")))
+            tables = driver.find_elements_by_class_name('Cp')
+            e = tables[-1].find_element_by_tag_name('tr')
+            #e = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//tr[@jsmodel='nXDxbd']")))
             while(e):
                 ActionChains(driver).move_to_element(e).click(e).perform() 
                 eval('mark_as_not_spam(subject,driver,s,rep,link,domain)')
-                e = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//tr[@jscontroller='ZdOxDb'][contains(@jslog,'18406')]")))
-        except : 
+                time.sleep(2)
+                e = tables[-1].find_element_by_tag_name('tr')
+                #e = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//tr[@jsmodel='nXDxbd']")))
+        except Exception as e :
+            print(e)
             print('Spam is Empty')
             
     elif 'mark_as_not_spam' in tasks and len(tasks) != 1 :
@@ -358,7 +368,8 @@ def begin(email,password,subject,recovery,ip,port,p_user,p_password,tasks,browse
         search.send_keys('in:spam subject:'+subject+Keys.RETURN)
         time.sleep(3)
         try:
-            e = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//tr[@jscontroller='ZdOxDb'][contains(@jslog,'18406')]")))
+            tables = driver.find_elements_by_class_name('Cp')
+            e = tables[-1].find_element_by_tag_name('tr')
             try :
                 tasks.remove('mark_as_not_spam')
             except:
@@ -366,7 +377,7 @@ def begin(email,password,subject,recovery,ip,port,p_user,p_password,tasks,browse
             while(e):
                 ActionChains(driver).move_to_element(e).click(e).perform() 
                 eval('mark_as_not_spam(subject,driver,s,rep,link,domain)')
-                e = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//tr[@jscontroller='ZdOxDb'][contains(@jslog,'18406')]")))
+                e = tables[-1].find_element_by_tag_name('tr')
         except Exception as e : 
             print(e)
             print('Spam is Empty')
@@ -377,7 +388,8 @@ def begin(email,password,subject,recovery,ip,port,p_user,p_password,tasks,browse
             search = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//input[@aria-label='Search mail']")))
             search.send_keys('in:inbox subject:'+subject+Keys.RETURN)
             time.sleep(3)
-            e = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//tr[@jscontroller='ZdOxDb'][contains(@jslog,'18406')]")))
+            tables = driver.find_elements_by_class_name('Cp')
+            e = tables[-1].find_element_by_tag_name('tr')
             try:
                 tasks.remove('mark_as_not_spam')
             except:
@@ -390,7 +402,7 @@ def begin(email,password,subject,recovery,ip,port,p_user,p_password,tasks,browse
                         time.sleep(2)
                     except :
                         driver.save_screenshot(".\\screenshots\\tasks_errors\\"+task+".png")
-                    e = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//tr[@jscontroller='ZdOxDb'][contains(@jslog,'18406')]")))
+                    e = tables[-1].find_element_by_tag_name('tr')
         except Exception as e :
             print(e)
             print("Done")
@@ -404,7 +416,8 @@ def begin(email,password,subject,recovery,ip,port,p_user,p_password,tasks,browse
             search = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//input[@aria-label='Search mail']")))
             search.send_keys('in:inbox subject:'+subject+Keys.RETURN)
             time.sleep(3)
-            e = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//tr[@jscontroller='ZdOxDb'][contains(@jslog,'18406')]")))
+            tables = driver.find_elements_by_class_name('Cp')
+            e = tables[-1].find_element_by_tag_name('tr')
             while(e) :
                 ActionChains(driver).move_to_element(e).click(e).perform() 
                 for task in tasks:
@@ -413,7 +426,7 @@ def begin(email,password,subject,recovery,ip,port,p_user,p_password,tasks,browse
                         time.sleep(2)
                     except :
                         driver.save_screenshot(".\\screenshots\\tasks_errors\\"+task+".png")
-                    e = WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.XPATH,"//tr[@jscontroller='ZdOxDb'][contains(@jslog,'18406')]")))
+                    e = tables[-1].find_element_by_tag_name('tr')
         except :
             print("Done")
         
