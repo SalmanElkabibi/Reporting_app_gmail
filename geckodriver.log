@@ -23734,9 +23734,3 @@ JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch res
 Crash AnnotationCrash Annotation GraphicsCriticalError: |[C0][GFX1-]: Receive  GraphicsCriticalError: |[C0][GFX1-]: Receive IPC close with reason=AbnormalShutdown (t=141.931) [GFX1-]: Receive IPC close with reason=AbnormalShutdown
 IPC close with reason=AbnormalShutdown (t=139.136) [GFX1-]: Receive IPC close with reason=AbnormalShutdown
 Exiting due to channel error.
-1627485394943	geckodriver	INFO	Listening on 127.0.0.1:51008
-1627485399230	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Comodo\\IceDragon\\icedragon.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Salman\\AppData\\Local\\Temp\\5\\rust_mozprofilekeIEww"
-JavaScript error: jar:file:///C:/Program%20Files/Comodo/IceDragon/browser/omni.ja!/components/nsBrowserGlue.js, line 1316: NS_ERROR_FILE_NOT_FOUND
-1627485402721	Marionette	INFO	Listening on port 51123
-JavaScript error: jar:file:///C:/Program%20Files/Comodo/IceDragon/browser/omni.ja!/components/nsBrowserGlue.js, line 1703: TypeError: addon is null
-1627485403050	Marionette	WARN	TLS certificate errors will be ignored for this session
